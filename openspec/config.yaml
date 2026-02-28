@@ -1,0 +1,57 @@
+schema: spec-driven
+
+context: |
+  Project: MCP server for Sylvia-IoT platform management APIs.
+  Repo: https://github.com/woofdogtw/sylvia-iot-core (platform backend)
+  Docs: https://woofdogtw.github.io/sylvia-iot-core
+
+  Tech stack: JavaScript (ESM), Node.js >= 18, @modelcontextprotocol/sdk, Zod.
+
+  Services:
+  - Auth service: SYLVIA_IOT_AUTH_URL (default: http://localhost:1080/auth)
+    OAuth2 token endpoint: {AUTH_URL}/oauth2/token (client_credentials grant)
+  - Coremgr service: SYLVIA_IOT_COREMGR_URL (default: http://localhost:1080/coremgr)
+    Management API base: {COREMGR_URL}/api/v1
+  - Data service: SYLVIA_IOT_DATA_URL (default: http://localhost:1080/data)
+    Query API base: {DATA_URL}/api/v1
+
+  Auth flow:
+  - Server reads SYLVIA_IOT_CLIENT_ID + SYLVIA_IOT_CLIENT_SECRET from env
+  - Token is fetched via client_credentials grant and cached in memory until expiry
+  - Each MCP tool call automatically uses the cached token; re-fetches on 401
+
+  MCP transport: stdio — spawned as a child process by the MCP client (Claude Code / Claude Desktop)
+  Credentials and service URLs are passed via environment variables in the MCP client config
+
+  Resources managed (all via coremgr API):
+  - user, client, unit, application, network, device
+  - device-route, network-route, dldata-buffer
+
+  Tool naming convention: {resource}_{action}
+    e.g. user_list, user_get, unit_create, device_route_delete
+
+  API response formats:
+  - List: { data: [...] }
+  - Count: { data: { count: N } }
+  - Get/Create: { data: { ...item } }
+  - Update/Delete: HTTP 204 (no body)
+
+  Testing:
+  - E2E tests require sylvia-iot-core services: use the sylvia-iot-services skill (skills/sylvia-iot-services/)
+
+  Conventions:
+  - All code and comments MUST be in English
+  - AI agents MAY git add but MUST NEVER git commit
+  - NEVER access /mnt/* paths
+
+rules:
+  tasks:
+    - Use checklist format (- [ ] item) for all task items
+    - Group tasks by phase with ## N. Phase Name headers
+
+  implementation:
+    - "Each tool module exports a registerXxxTools(server) function"
+    - "Tool handlers return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] } for success"
+    - "Tool handlers return { content: [...], isError: true } for API errors"
+    - "Optional query params are omitted when undefined/null/empty string"
+    - "Auth token is auto-refreshed; individual tools do not manage auth"
