@@ -1,0 +1,35 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y sqlite3
+
+      - name: Remove bundled binary (CI downloads latest from GitHub Releases)
+        run: rm -f skills/sylvia-iot-services/scripts/sylvia-iot-core
+
+      - name: Remove local database (CI creates fresh)
+        run: rm -f skills/sylvia-iot-services/scripts/test.db
+
+      - name: Start backend services (RabbitMQ + EMQX + sylvia-iot-core)
+        run: bash skills/sylvia-iot-services/scripts/start.sh
+
+      - run: npm ci
+
+      - name: Run E2E tests
+        run: node test-mcp.mjs
