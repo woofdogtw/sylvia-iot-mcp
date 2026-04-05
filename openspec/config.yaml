@@ -37,7 +37,7 @@ context: |
   - Update/Delete: HTTP 204 (no body)
 
   Testing:
-  - E2E tests require sylvia-iot-core services: use the sylvia-iot-services skill (skills/sylvia-iot-services/)
+  - E2E tests require sylvia-iot-core services: use the sylvia-iot-services skill (install via `npx add woofdogtw/ai-skills`)
 
   Conventions:
   - All code and comments MUST be in English

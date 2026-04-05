@@ -2,11 +2,3 @@ node_modules/
 .env
 *.pid
 .claude/settings.local.json
-
-# sylvia-iot-services runtime artifacts
-skills/sylvia-iot-services/scripts/sylvia-iot-core
-skills/sylvia-iot-services/scripts/sylvia-iot-core-*.tar.xz
-skills/sylvia-iot-services/scripts/sylvia-iot-core.log
-skills/sylvia-iot-services/scripts/config.runtime.json5
-skills/sylvia-iot-services/scripts/*.db
-skills/sylvia-iot-services/scripts/*.pid
