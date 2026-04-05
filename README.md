@@ -62,7 +62,29 @@ node src/index.js
 
 ## Claude Code / Claude Desktop Integration
 
-Add the server to your MCP config (e.g. `~/.claude.json` for Claude Code):
+Add the server to your MCP config (e.g. `~/.claude.json` for Claude Code).
+
+**Via npx (no installation required):**
+
+```json
+{
+  "mcpServers": {
+    "sylvia-iot": {
+      "command": "npx",
+      "args": ["-y", "github:woofdogtw/sylvia-iot-mcp"],
+      "env": {
+        "SYLVIA_IOT_AUTH_URL": "http://your-host/auth",
+        "SYLVIA_IOT_COREMGR_URL": "http://your-host/coremgr",
+        "SYLVIA_IOT_DATA_URL": "http://your-host/data",
+        "SYLVIA_IOT_CLIENT_ID": "your-client-id",
+        "SYLVIA_IOT_CLIENT_SECRET": "your-client-secret"
+      }
+    }
+  }
+}
+```
+
+**Via local checkout:**
 
 ```json
 {

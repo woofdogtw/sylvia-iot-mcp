@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "MCP server for sylvia-iot-core management APIs",
+  "bin": {
+    "sylvia-iot-mcp": "src/index.js"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
